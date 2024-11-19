@@ -9,8 +9,7 @@ from passlib.context import CryptContext
 from typing import Union
 from typing_extensions import Annotated
 from datetime import datetime, timedelta, timezone
-import settings
-
+from settings import env_settings
 
 userRouter = APIRouter(
     prefix="/api/user",
@@ -86,7 +85,7 @@ def create_access_token(data: dict, expires_delta: Union[timedelta, None] = None
     else:
         expires = datetime.now(timezone.utc) + timedelta(minutes=(600))
     to_encode.update({"exp": expires})
-    encoded_jwt = jwt.encode(to_encode, settings.SECRET_KEY, algorithm=settings.ALGORITHM)
+    encoded_jwt = jwt.encode(to_encode, env_settings.SECRET_KEY, algorithm=env_settings.ALGORITHM)
     return encoded_jwt
 
 
@@ -114,7 +113,7 @@ async def user_login(form_data: OAuth2PasswordRequestForm = Depends()):
             detail="Could not validate cerdentials",
             headers={"WWW-Authenticate": "Bearer"},
         )
-    access_token_expires = timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    access_token_expires = timedelta(minutes=env_settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_access_token(
         data={"sub": user.username}, expires_delta=access_token_expires
     )
@@ -144,7 +143,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, settings.SECRET_KEY, algorithms=settings.ALGORITHM)
+        payload = jwt.decode(token, env_settings.SECRET_KEY, algorithms=env_settings.ALGORITHM)
         username: str = payload.get("sub")
         if username is None:
             raise credentials_exception

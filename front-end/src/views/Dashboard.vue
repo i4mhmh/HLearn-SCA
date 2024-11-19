@@ -2,12 +2,53 @@
   <title>HLearn-侧信道攻击控制台</title>
   <div class="common-layout">
     <el-container>
-      <el-header><h1>HLearn</h1></el-header>
+      <el-header
+        ><el-menu
+          :default-active="activeIndex"
+          class="el-menu-demo"
+          mode="horizontal"
+          :ellipsis="false"
+          @select="handleSelect"
+        >
+          <el-menu-item index="0" @select="handleLogoSelect">
+            <img
+              style="width: 50px; height: 30px"
+              src="@/images/logo.jpg"
+              alt="HLearn logo"
+            />
+          </el-menu-item>
+          <el-menu-item index="1">Processing Center</el-menu-item>
+          <el-sub-menu index="2">
+            <template #title>Workspace</template>
+            <el-menu-item index="2-1">item one</el-menu-item>
+            <el-menu-item index="2-2">item two</el-menu-item>
+            <el-menu-item index="2-3">item three</el-menu-item>
+            <el-sub-menu index="2-4">
+              <template #title>item four</template>
+              <el-menu-item index="2-4-1">item one</el-menu-item>
+              <el-menu-item index="2-4-2">item two</el-menu-item>
+              <el-menu-item index="2-4-3">item three</el-menu-item>
+            </el-sub-menu>
+          </el-sub-menu>
+        </el-menu>
+      </el-header>
       <el-container>
-        <el-aside width="200px">Aside</el-aside>
+        <el-aside width="200px">
+          <el-scrollba>
+            <el-menu :default-openeds="['1', '3']">
+              <el-sub-menu index="1">
+                <template #title>
+                  <el-icon>
+                    <message />
+                  </el-icon>
+                </template>
+              </el-sub-menu>
+            </el-menu>
+          </el-scrollba>
+        </el-aside>
         <el-container>
           <el-main>Main</el-main>
-          <el-footer>Footer</el-footer>
+          <el-footer>HLearn By M0nk3y</el-footer>
         </el-container>
       </el-container>
     </el-container>
@@ -50,6 +91,12 @@ export default {
         return;
       }
     };
+    // 处理logo点击事件
+    const handleLogoSelect = (index) => {
+      console.log(index);
+      router.push({ name: "Dashboard" });
+    };
+
     onMounted(() => {
       checkAuthentication();
     });
@@ -57,9 +104,31 @@ export default {
       isAuthenticated,
       checkAuthentication,
       username,
+      handleLogoSelect,
     };
   },
 };
 </script>
 
-<style ></style>
+<style>
+html,
+body,
+#app {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+}
+.common-layout {
+  display: flex;
+  flex: 1;
+}
+.el-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.el-main {
+  flex: 1;
+}
+</style>

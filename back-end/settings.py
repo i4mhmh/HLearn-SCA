@@ -1,3 +1,19 @@
-SECRET_KEY = "4b218dac90f53885d3f73f88f7d9b6782173da31c04253cfdb1579351e8c286d"
-ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 1200
+from pydantic_settings import BaseSettings
+from dotenv import load_dotenv
+import os
+
+# 加载.env文件
+load_dotenv()
+
+
+class Settings(BaseSettings):
+    SECRET_KEY: str = os.getenv('SECRET_KEY')
+    ALGORITHM: str = os.getenv('ALGORITHM')
+    ACCESS_TOKEN_EXPIRE_MINUTES: int = os.getenv('ACCESS_TOKEN_EXPIRE_MINUTES', 1200)
+
+    class Config:
+        env_file = ".env"
+        env_file_encoding = 'utf-8'
+
+
+env_settings = Settings
