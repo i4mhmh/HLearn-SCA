@@ -6,7 +6,19 @@ const routes = [
     {
         path: '/',
         name: 'Dashboard',
-        component: Dashboard
+        component: Dashboard,
+        children: [
+            {
+                path: 'dataupload',
+                name: 'DataUpload',
+                component: () => import('@/views/dashboard/DataUpload.vue')
+            },
+            {
+                path: 'service-SA',
+                name: 'SSA',
+                component: () => import('@/views/dashboard/ServerShow.vue')
+            }
+        ]
     },
     {
         path: '/login',

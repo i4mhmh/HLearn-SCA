@@ -3,14 +3,8 @@
   <div class="common-layout">
     <el-container>
       <el-header style="padding: 0%">
-        <el-menu
-          :default-active="activeIndex"
-          class="el-menu-demo"
-          mode="horizontal"
-          :ellipsis="false"
-          @select="handleSelect"
-        >
-          <el-menu-item index="0">
+        <el-menu class="el-menu-demo" mode="horizontal" :ellipsis="false">
+          <el-menu-item index="0" @click="handleTopMenu(1)">
             <img
               style="width: 80px"
               src="@/images/logo.svg"
@@ -30,52 +24,51 @@
           <el-row class="tac">
             <el-col>
               <el-menu
-                default-active="2"
+                default-active="1"
                 class="el-menu-vertical-demo"
-                @open="handleOpen"
-                @close="handleClose"
-                style="height: 83vh"
+                style="height: 83.5vh"
               >
-                <el-sub-menu index="1">
+                <el-menu-item index="1" @click="handleMenuSelect(1)">
                   <template #title>
-                    <el-icon><location /></el-icon>
-                    <span>主控台</span>
+                    <el-icon><Odometer /></el-icon>
+                    <span>服务端态势感知</span>
                   </template>
-                  <el-menu-item-group title="Group One">
-                    <el-menu-item index="1-1">item one</el-menu-item>
-                    <el-menu-item index="1-2">item two</el-menu-item>
-                  </el-menu-item-group>
-                  <el-menu-item-group title="Group Two">
-                    <el-menu-item index="1-3">item three</el-menu-item>
-                  </el-menu-item-group>
-                  <el-sub-menu index="1-4">
-                    <template #title>item four</template>
-                    <el-menu-item index="1-4-1">item one</el-menu-item>
-                  </el-sub-menu>
+                </el-menu-item>
+                <el-menu-item index="2" @click="handleMenuSelect(2)">
+                  <el-icon><Promotion /></el-icon>
+                  <span>数据集上传</span>
+                </el-menu-item>
+                <el-sub-menu index="3" @click="handleMenuSelect(3)">
+                  <template #title>
+                    <el-icon><document /></el-icon>
+                    <span>攻击</span>
+                  </template>
+                  <el-menu-item index="3-1" @click="handleMenuSelect(3.1)">
+                    非建模类攻击
+                  </el-menu-item>
+                  <el-menu-item index="3-2" @click="handleMenuSelect(3.2)">
+                    建模类攻击
+                  </el-menu-item>
                 </el-sub-menu>
-                <el-menu-item index="2">
-                  <el-icon><icon-menu /></el-icon>
-                  <span>Navigator Two</span>
+                <el-menu-item index="4" @click="handleMenuSelect(4)">
+                  <el-icon><Menu /></el-icon>
+                  <span>任务中心</span>
                 </el-menu-item>
-                <el-menu-item index="3" disabled>
-                  <el-icon><document /></el-icon>
-                  <span>Navigator Three</span>
-                </el-menu-item>
-                <el-menu-item index="4">
-                  <el-icon><setting /></el-icon>
-                  <span>Navigator Four</span>
+                <el-menu-item index="5" @click="handleMenuSelect(5)">
+                  <el-icon><DataAnalysis /></el-icon>
+                  <span>结果展示</span>
                 </el-menu-item>
               </el-menu>
             </el-col>
           </el-row>
         </el-aside>
-        <el-main>Main</el-main>
+        <el-main><router-view /></el-main>
       </el-container>
       <el-footer style="background-color: aliceblue; align-items: center">
-        <center>
+        <div style="text-align: center">
           侧信道攻击控制平台 &copy; 2024 <br />Made by Minghui Hou & Guilin
           University of Electronic Technology
-        </center>
+        </div>
       </el-footer>
     </el-container>
   </div>
@@ -118,9 +111,18 @@ export default {
       }
     };
     // 处理logo点击事件
-    const handleLogoSelect = (index) => {
-      console.log(index);
-      router.push({ name: "Dashboard" });
+    const handleTopMenu = (index) => {
+      if (index === 1) {
+        window.location.reload("/");
+      }
+    };
+
+    const handleMenuSelect = (index) => {
+      if (index == 1) {
+        router.push({ name: "SSA" });
+      } else if (index == 2) {
+        router.push({ name: "DataUpload" });
+      }
     };
 
     onMounted(() => {
@@ -130,7 +132,8 @@ export default {
       isAuthenticated,
       checkAuthentication,
       username,
-      handleLogoSelect,
+      handleTopMenu,
+      handleMenuSelect,
     };
   },
 };
