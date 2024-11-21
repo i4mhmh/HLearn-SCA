@@ -11,6 +11,7 @@ from typing_extensions import Annotated
 from datetime import datetime, timedelta, timezone
 from settings import env_settings
 
+print(env_settings.ACCESS_TOKEN_EXPIRE_MINUTES)
 userRouter = APIRouter(
     prefix="/api/user",
     tags=["User"]
@@ -151,5 +152,9 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     except InvalidTokenError:
         raise credentials_exception
     user = get_user(username)
+
+    print(user)
+    print(user.fullname)
+    print(12312312)
     return user.fullname
 # 退出登录

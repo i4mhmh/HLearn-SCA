@@ -1,11 +1,15 @@
 <template>
   <div class="container h-screen flex flex-col" style="height: 100%">
     <el-row class="flex-1">
-      <el-col :span="12">
-        <div ref="chartContainer" class="chart-container"></div>
+      <el-col :span="12" style="justify-content: space-between">
+        <div
+          ref="pieCpuCharts"
+          class="chart-container"
+          style="width: 48%"
+        ></div>
       </el-col>
       <el-col :span="12">
-        <div>右上</div>
+        <div ref="chartContainer" class="chart-container"></div>
       </el-col>
     </el-row>
     <el-row class="flex-1">
@@ -20,6 +24,11 @@
 <script>
 import * as echarts from "echarts";
 import { formatter } from "element-plus";
+import {
+  initCpuPieChart,
+  initGpuPieChart,
+  updatePieChart,
+} from "@/utils/ServerShowCPU.js";
 
 export default {
   name: "LineChart",
@@ -40,6 +49,8 @@ export default {
     }
   },
   methods: {
+    // 初始化饼状图
+
     initChart() {
       this.chart = echarts.init(this.$refs.chartContainer);
 
