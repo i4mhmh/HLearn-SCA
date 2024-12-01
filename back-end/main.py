@@ -1,11 +1,12 @@
 from typing import Union
 from fastapi import FastAPI
-from apps.api import user
+from apps.api import user, datasets
 import apps
 from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI()
-app.include_router(apps.api.user.userRouter)
+app.include_router(user.userRouter)
+app.include_router(datasets.datasetRouter)
 
 origins = [
     "http://localhost",
